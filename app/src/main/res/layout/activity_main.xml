@@ -1,34 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/sim_status"
+        android:id="@+id/sim_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/network_provider"/>
+        android:text="@string/sim_data"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:textSize="@dimen/sim_header_size"
+        android:textStyle="bold"/>
 
-    <TextView
-        android:id="@+id/network_provider"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/sim_one_background"
+        android:layout_margin="20dp"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/slot_1_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/slot_1_data"
+            android:textSize="@dimen/sim_header_size"/>
+
+        <TextView
+            android:id="@+id/sim_status_slot_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sim_status"/>
+
+        <TextView
+            android:id="@+id/mobile_no_slot_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mobile_number"/>
+
+        <TextView
+            android:id="@+id/display_name_slot_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/display_name"/>
+
+        <TextView
+            android:id="@+id/subscription_id_slot_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/subscription_id"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/sim_two_background"
+        android:layout_margin="20dp"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/slot_2_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/slot_2_data"
+            android:textSize="@dimen/sim_header_size"/>
+
+        <TextView
+            android:id="@+id/sim_status_slot_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sim_status"/>
+
+        <TextView
+            android:id="@+id/mobile_no_slot_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mobile_number"/>
+
+        <TextView
+            android:id="@+id/display_name_slot_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/display_name"/>
+
+        <TextView
+            android:id="@+id/subscription_id_slot_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/subscription_id"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/setNewData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/mobile_no"/>
+        android:padding="15dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="@color/black_color"
+        android:textColor="@color/white_color"
+        android:text="@string/set_new_data"/>
 
-    <TextView
-        android:id="@+id/mobile_no"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
