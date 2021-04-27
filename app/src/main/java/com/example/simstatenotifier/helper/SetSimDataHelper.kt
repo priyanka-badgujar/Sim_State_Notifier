@@ -1,12 +1,14 @@
-package com.example.simstatenotifier
+package com.example.simstatenotifier.helper
 
 import android.content.Context
 import android.os.Build
 import android.telephony.SubscriptionInfo
 import android.telephony.SubscriptionManager
 import androidx.annotation.RequiresPermission
+import com.example.simstatenotifier.constants.ApplicationConstants
+import com.example.simstatenotifier.sharedpreferences.SharedPreferencesForData
 
-class SimDataHelper(context: Context) {
+class SetSimDataHelper(context: Context) {
 
     private val sManager =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
@@ -15,16 +17,18 @@ class SimDataHelper(context: Context) {
             TODO("VERSION.SDK_INT < LOLLIPOP_MR1")
         }
 
-    private val sharedPreference = SharedPreferencesForData(context)
+    private val sharedPreference =
+        SharedPreferencesForData(
+            context
+        )
 
     @RequiresPermission(android.Manifest.permission.READ_PHONE_STATE)
     fun setOldSimData() {
-        val infoSim1: SubscriptionInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+        val infoSim1: SubscriptionInfo? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             sManager.getActiveSubscriptionInfoForSimSlotIndex(0)
-        } else {
+        } else
             TODO("VERSION.SDK_INT < LOLLIPOP_MR1")
-        }
-        val infoSim2: SubscriptionInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+        val infoSim2: SubscriptionInfo? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             sManager.getActiveSubscriptionInfoForSimSlotIndex(1)
         } else {
             TODO("VERSION.SDK_INT < LOLLIPOP_MR1")
@@ -34,7 +38,7 @@ class SimDataHelper(context: Context) {
                 ApplicationConstants.KEY_SLOT_FIRST_OLD,
                 infoSim1.displayName.toString(),
                 infoSim1.subscriptionId.toString(),
-                infoSim1.number
+                infoSim1.number ?: ApplicationConstants.NOT_SET
             )
         } else {
             sharedPreference.saveHashMap(
@@ -49,7 +53,7 @@ class SimDataHelper(context: Context) {
                 ApplicationConstants.KEY_SLOT_SECOND_OLD,
                 infoSim2.displayName.toString(),
                 infoSim2.subscriptionId.toString(),
-                infoSim2.number
+                infoSim2.number ?: ApplicationConstants.NOT_SET
             )
         } else {
             sharedPreference.saveHashMap(

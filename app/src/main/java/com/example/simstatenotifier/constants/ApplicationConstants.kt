@@ -1,13 +1,13 @@
-package com.example.simstatenotifier
+package com.example.simstatenotifier.constants
 
 class ApplicationConstants {
 
     companion object {
-
         const val NOT_SET = "NOT SET"
         const val SLOT_EMPTY = "EMPTY"
         const val NO_CHANGE = "NO CHANGE"
         const val SIM_SWAPPED = "SIM swapped"
+        const val SIM_NOT_SWAPPED = "SIM not swapped"
         const val SIM_ONE_POSITION_CHANGE = "SIM 1 is shifted from Slot 1 to slot 2"
         const val SIM_TWO_POSITION_CHANGE = "SIM 2 is shifted from Slot 2 to slot 1"
         const val NEW_SIM_INSERTED = "New SIM inserted"
@@ -22,5 +22,4 @@ class ApplicationConstants {
         const val KEY_SUBSCRIPTION_ID = "subscription_id"
         const val KEY_MOBILE_NUMBER = "mobile_no"
     }
-
 }

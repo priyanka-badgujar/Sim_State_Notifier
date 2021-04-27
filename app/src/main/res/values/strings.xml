@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Sim State Notifier</string>
+    <string name="sim_status">SIM Status : </string>
+    <string name="mobile_number">Mobile Number : </string>
+    <string name="display_name">Display Name: </string>
+    <string name="subscription_id">Subscription ID: </string>
+    <string name="slot_1_data">SLOT 1 </string>
+    <string name="slot_2_data">SLOT 2 </string>
+    <string name="sim_data">SIM DATA</string>
+    <string name="set_new_data">SET NEW DATA</string>
 </resources>

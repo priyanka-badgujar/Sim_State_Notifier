@@ -1,8 +1,9 @@
-package com.example.simstatenotifier
+package com.example.simstatenotifier.sharedpreferences
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import com.example.simstatenotifier.constants.ApplicationConstants
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
