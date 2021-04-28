@@ -45,8 +45,6 @@ class SimDataHelper(
     }
 
     fun setNewSimData() {
-        if (checkPermission())
-            setSimDataHelper.setNewSimData()
         firstSimNew = sharedPreferences.getHashMapData(ApplicationConstants.KEY_SLOT_FIRST)
         secondSimNew = sharedPreferences.getHashMapData(ApplicationConstants.KEY_SLOT_SECOND)
     }
