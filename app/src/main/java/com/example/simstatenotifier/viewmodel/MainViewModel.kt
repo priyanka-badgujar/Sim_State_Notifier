@@ -63,11 +63,7 @@ class MainViewModel(
         setAndFetchSimData()
     }
 
-    fun setSelectedSimStatus(subscriptionId: String?) {
-        selectedSimStatus.postValue(simDataHelper.getSelectedSimStatus(subscriptionId))
-    }
-
-    fun getSelectedSimStatus() : MutableLiveData<String> {
-        return selectedSimStatus
+    fun getSelectedSimStatus(selectedSubscriptionId: String?): MutableLiveData<String> {
+        return simDataHelper.getSelectedSimStatus(selectedSubscriptionId)
     }
 }

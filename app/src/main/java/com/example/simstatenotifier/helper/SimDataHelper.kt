@@ -2,15 +2,15 @@ package com.example.simstatenotifier.helper
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.MutableLiveData
 import com.example.simstatenotifier.constants.ApplicationConstants
 import com.example.simstatenotifier.sharedpreferences.SharedPreferencesForData
 
 class SimDataHelper(
-    private val context: Context,
+    private val activity: Activity,
     private val sharedPreferences: SharedPreferencesForData,
     private val setSimDataHelper: SetSimDataHelper
 ) {
@@ -24,11 +24,28 @@ class SimDataHelper(
         sharedPreferences.getHashMapData(ApplicationConstants.KEY_SLOT_SECOND)
     private val PERMISSION_READ_STATE = 5
 
+    private var firstSimNewLiveData = MutableLiveData<HashMap<String?, String?>>()
+
+    private var secondSimNewLiveData = MutableLiveData<HashMap<String?, String?>>()
+
+
     init {
-       setSimData()
+        setSimData()
     }
 
-    fun getSelectedSimStatus(subscriptionId: String?) : String = when {
+    fun getSelectedSimStatus(subscriptionId: String?): MutableLiveData<String> {
+        var selectedSimStatusValue = MutableLiveData<String>()
+
+        firstSimNewLiveData.observeForever {
+            selectedSimStatusValue.value = returnSelectedSimStatus(subscriptionId)
+        }
+        secondSimNewLiveData.observeForever {
+            selectedSimStatusValue.value = returnSelectedSimStatus(subscriptionId)
+        }
+        return selectedSimStatusValue
+    }
+
+    private fun returnSelectedSimStatus(subscriptionId: String?) = when {
         ((firstSimOld[ApplicationConstants.KEY_SUBSCRIPTION_ID] == subscriptionId &&
                 firstSimOld[ApplicationConstants.KEY_SUBSCRIPTION_ID] == firstSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID]) ||
                 secondSimOld[ApplicationConstants.KEY_SUBSCRIPTION_ID] == subscriptionId &&
@@ -42,14 +59,13 @@ class SimDataHelper(
             ApplicationConstants.SIM_PRESENT_SLOT_CHANGE
         }
         ((firstSimOld[ApplicationConstants.KEY_SUBSCRIPTION_ID] == subscriptionId &&
-                firstSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID] == ApplicationConstants.NOT_SET) ||
+                firstSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID] == ApplicationConstants.NOT_SET) &&
                 secondSimOld[ApplicationConstants.KEY_SUBSCRIPTION_ID] == subscriptionId &&
                 secondSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID] == ApplicationConstants.NOT_SET) -> {
             ApplicationConstants.SIM_ABSENT
         }
         else -> ApplicationConstants.SIM_CHANGE
     }
-
 
     fun setSimData() {
         if (firstSimNew.size == 0 || secondSimNew.size == 0) {
@@ -63,13 +79,18 @@ class SimDataHelper(
             if (checkPermission())
                 setSimDataHelper.setOldSimData()
             firstSimOld = sharedPreferences.getHashMapData(ApplicationConstants.KEY_SLOT_FIRST_OLD)
-            secondSimOld = sharedPreferences.getHashMapData(ApplicationConstants.KEY_SLOT_SECOND_OLD)
+            secondSimOld =
+                sharedPreferences.getHashMapData(ApplicationConstants.KEY_SLOT_SECOND_OLD)
         }
+        firstSimNewLiveData.value = firstSimNew
+        secondSimNewLiveData.value = secondSimNew
     }
 
     fun setNewSimData() {
         firstSimNew = sharedPreferences.getHashMapData(ApplicationConstants.KEY_SLOT_FIRST)
         secondSimNew = sharedPreferences.getHashMapData(ApplicationConstants.KEY_SLOT_SECOND)
+        firstSimNewLiveData.value = firstSimNew
+        secondSimNewLiveData.value = secondSimNew
     }
 
     fun setOldSimDataToNew() {
@@ -140,14 +161,14 @@ class SimDataHelper(
 
     private fun checkPermission(): Boolean {
         if (ContextCompat.checkSelfPermission(
-                context,
+                activity,
                 Manifest.permission.READ_PHONE_STATE
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             return true
         } else {
             ActivityCompat.requestPermissions(
-                context as Activity,
+                activity,
                 arrayOf(Manifest.permission.READ_PHONE_STATE),
                 PERMISSION_READ_STATE
             )

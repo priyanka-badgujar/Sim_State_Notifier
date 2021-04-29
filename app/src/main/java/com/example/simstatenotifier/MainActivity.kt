@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.transition.Visibility
 import android.view.View
 import android.widget.RadioButton
 import android.widget.Toast
@@ -84,14 +83,11 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         mainViewModel.getSimSwappedStatus().observe(this, Observer {
             sim_header.text = it
         })
-
-        mainViewModel.getSelectedSimStatus().observe(this, Observer {
-            selectedSimStatus.text = it
-        })
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         mainViewModel.setNewSimData()
+        checkAndSetIfSimIsSelected()
     }
 
     private fun checkPermission(): Boolean {
@@ -172,12 +168,18 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     }
 
     private fun checkAndSetIfSimIsSelected() {
-        val subscriptionId = sharedPreferences.getValueString(ApplicationConstants.KEY_SELECTED_SIM_SUB_ID)
+        val subscriptionId = getSelectedSubscriptionId()
         if (subscriptionId != "" && subscriptionId != null) {
             layout_for_sim_selection.visibility = View.GONE
             selected_sim_status_layout.visibility = View.VISIBLE
             selectedSimSubscriptionId.text = "${getString(R.string.subscription_id)} $subscriptionId"
-            mainViewModel.setSelectedSimStatus(subscriptionId)
+            mainViewModel.getSelectedSimStatus(getSelectedSubscriptionId()).observe(this, Observer {
+                selectedSimStatus.text = it
+            })
         }
     }
+
+    private fun getSelectedSubscriptionId() : String? =
+        sharedPreferences.getValueString(ApplicationConstants.KEY_SELECTED_SIM_SUB_ID)
+
 }
