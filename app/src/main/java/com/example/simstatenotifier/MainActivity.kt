@@ -5,6 +5,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.transition.Visibility
+import android.view.View
+import android.widget.RadioButton
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -39,6 +43,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         checkPermission()
         setupViewModel()
         setupObserver()
+        checkAndSetIfSimIsSelected()
     }
 
     private fun setupViewModel() {
@@ -78,6 +83,10 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         })
         mainViewModel.getSimSwappedStatus().observe(this, Observer {
             sim_header.text = it
+        })
+
+        mainViewModel.getSelectedSimStatus().observe(this, Observer {
+            selectedSimStatus.text = it
         })
     }
 
@@ -135,5 +144,40 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         val pref =
             getSharedPreferences(ApplicationConstants.SHARED_PREF_SIM_DATA, Context.MODE_PRIVATE)
         pref.unregisterOnSharedPreferenceChangeListener(this)
+    }
+
+    fun submit(view: View) {
+        var id: Int = radio_group.checkedRadioButtonId
+        if (id != -1) {
+            val radio: RadioButton = findViewById(id)
+            var subscriptionId: String? = ""
+            var firstSimNew: HashMap<String?, String?> =
+                sharedPreferences.getHashMapData(ApplicationConstants.KEY_SLOT_FIRST)
+            var secondSimNew: HashMap<String?, String?> =
+                sharedPreferences.getHashMapData(ApplicationConstants.KEY_SLOT_SECOND)
+            if (radio.text == getString(R.string.sim_1)) {
+                subscriptionId = firstSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID]
+                sharedPreferences.saveString(ApplicationConstants.KEY_SELECTED_SIM_SUB_ID, firstSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID])
+            } else if (radio.text == getString(R.string.sim_2)) {
+                subscriptionId = secondSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID]
+            }
+            sharedPreferences.saveString(ApplicationConstants.KEY_SELECTED_SIM_SUB_ID, subscriptionId)
+            checkAndSetIfSimIsSelected()
+        } else {
+            Toast.makeText(
+                this, "Please select SIM from radio buttons",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun checkAndSetIfSimIsSelected() {
+        val subscriptionId = sharedPreferences.getValueString(ApplicationConstants.KEY_SELECTED_SIM_SUB_ID)
+        if (subscriptionId != "" && subscriptionId != null) {
+            layout_for_sim_selection.visibility = View.GONE
+            selected_sim_status_layout.visibility = View.VISIBLE
+            selectedSimSubscriptionId.text = "${getString(R.string.subscription_id)} $subscriptionId"
+            mainViewModel.setSelectedSimStatus(subscriptionId)
+        }
     }
 }

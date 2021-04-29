@@ -13,6 +13,7 @@ class MainViewModel(
     private var slotOneStatus = MutableLiveData<String>()
     private var slotTwoStatus = MutableLiveData<String>()
     private var simSwappedStatus = MutableLiveData<String>()
+    private var selectedSimStatus = MutableLiveData<String>()
 
     init {
         simDataHelper.setSimData()
@@ -60,5 +61,13 @@ class MainViewModel(
     fun initialiseData() {
         simDataHelper.setSimData()
         setAndFetchSimData()
+    }
+
+    fun setSelectedSimStatus(subscriptionId: String?) {
+        selectedSimStatus.postValue(simDataHelper.getSelectedSimStatus(subscriptionId))
+    }
+
+    fun getSelectedSimStatus() : MutableLiveData<String> {
+        return selectedSimStatus
     }
 }

@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#404040</color>
     <color name="colorPrimaryDark">#404040</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#ff99a8</color>
     <color name="sim_one_background">#00FFFF</color>
     <color name="sim_two_background">#99FF99</color>
     <color name="white_color">#f2f2f2</color>

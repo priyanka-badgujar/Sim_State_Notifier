@@ -21,5 +21,12 @@ class ApplicationConstants {
         const val KEY_DISPLAY_NAME = "display_name"
         const val KEY_SUBSCRIPTION_ID = "subscription_id"
         const val KEY_MOBILE_NUMBER = "mobile_no"
+        const val KEY_SELECTED_SIM_SUB_ID = "selected_sim_subscription_id"
+
+        //Selected sim status
+        const val SIM_PRESENT_NO_CHANGE = "SIM PRESENT - NO CHANGE"
+        const val SIM_PRESENT_SLOT_CHANGE = "SIM PRESENT - SLOT CHANGE"
+        const val SIM_CHANGE = "SIM CHANGE"
+        const val SIM_ABSENT = "SIM ABSENT"
     }
 }

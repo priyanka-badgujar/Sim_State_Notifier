@@ -28,6 +28,29 @@ class SimDataHelper(
        setSimData()
     }
 
+    fun getSelectedSimStatus(subscriptionId: String?) : String = when {
+        ((firstSimOld[ApplicationConstants.KEY_SUBSCRIPTION_ID] == subscriptionId &&
+                firstSimOld[ApplicationConstants.KEY_SUBSCRIPTION_ID] == firstSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID]) ||
+                secondSimOld[ApplicationConstants.KEY_SUBSCRIPTION_ID] == subscriptionId &&
+                secondSimOld[ApplicationConstants.KEY_SUBSCRIPTION_ID] == secondSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID]) -> {
+            ApplicationConstants.SIM_PRESENT_NO_CHANGE
+        }
+        ((firstSimOld[ApplicationConstants.KEY_SUBSCRIPTION_ID] == subscriptionId &&
+                firstSimOld[ApplicationConstants.KEY_SUBSCRIPTION_ID] == secondSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID]) ||
+                secondSimOld[ApplicationConstants.KEY_SUBSCRIPTION_ID] == subscriptionId &&
+                secondSimOld[ApplicationConstants.KEY_SUBSCRIPTION_ID] == firstSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID]) -> {
+            ApplicationConstants.SIM_PRESENT_SLOT_CHANGE
+        }
+        ((firstSimOld[ApplicationConstants.KEY_SUBSCRIPTION_ID] == subscriptionId &&
+                firstSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID] == ApplicationConstants.NOT_SET) ||
+                secondSimOld[ApplicationConstants.KEY_SUBSCRIPTION_ID] == subscriptionId &&
+                secondSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID] == ApplicationConstants.NOT_SET) -> {
+            ApplicationConstants.SIM_ABSENT
+        }
+        else -> ApplicationConstants.SIM_CHANGE
+    }
+
+
     fun setSimData() {
         if (firstSimNew.size == 0 || secondSimNew.size == 0) {
             if (checkPermission())

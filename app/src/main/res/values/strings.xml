@@ -8,4 +8,10 @@
     <string name="slot_2_data">SLOT 2 </string>
     <string name="sim_data">SIM DATA</string>
     <string name="set_new_data">SET NEW DATA</string>
+    <string name="selected_sim_status_not_set">Selected sim status not set</string>
+    <string name="sim_1">SIM 1</string>
+    <string name="sim_2">SIM 2</string>
+    <string name="please_select_sim">Please select SIM</string>
+    <string name="set_sim">Set SIM</string>
+    <string name="selected_sim_status">Selected SIM status</string>
 </resources>

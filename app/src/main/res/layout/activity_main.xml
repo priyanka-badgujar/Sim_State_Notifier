@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="@string/sim_data"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:textSize="@dimen/sim_header_size"
         android:textStyle="bold"/>
 
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@color/sim_one_background"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         android:padding="20dp">
 
         <TextView
@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@color/sim_two_background"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         android:padding="20dp">
 
         <TextView
@@ -104,9 +104,92 @@
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_margin="10dp"
         android:background="@color/black_color"
         android:textColor="@color/white_color"
         android:text="@string/set_new_data"/>
+
+    <LinearLayout
+        android:id="@+id/layout_for_sim_selection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="20dp"
+        android:orientation="vertical">
+        <RadioGroup
+            android:id="@+id/radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#dbeceb"
+            android:layout_margin="10dp"
+            android:padding="30dp">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/please_select_sim"
+                android:textStyle="bold"
+                android:textSize="20sp"/>
+
+            <RadioButton
+                android:id="@+id/sim_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sim_1" />
+
+            <RadioButton
+                android:id="@+id/sim_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sim_2" />
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/black_color"
+                android:textColor="@color/white_color"
+                android:text="@string/set_sim"
+                android:onClick="submit"/>
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/selected_sim_status_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/colorAccent"
+        android:visibility="invisible"
+        android:layout_margin="10dp"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/selected_sim_status"
+            android:textStyle="bold"
+            android:padding="5dp"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/selectedSimSubscriptionId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/subscription_id"
+            android:padding="5dp"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/selectedSimStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/selected_sim_status_not_set"
+            android:padding="5dp"
+            android:textSize="18sp" />
+
+    </LinearLayout>
 
 </LinearLayout>
