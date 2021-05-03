@@ -22,11 +22,13 @@ class ApplicationConstants {
         const val KEY_SUBSCRIPTION_ID = "subscription_id"
         const val KEY_MOBILE_NUMBER = "mobile_no"
         const val KEY_SELECTED_SIM_SUB_ID = "selected_sim_subscription_id"
+        const val KEY_NEW_SIM_COUNT = "new_sim_count"
+        const val KEY_NEW_SIM_SLOT_INDEX = "new_sim_slot_index"
 
         //Selected sim status
         const val SIM_PRESENT_NO_CHANGE = "SIM PRESENT - NO CHANGE"
         const val SIM_PRESENT_SLOT_CHANGE = "SIM PRESENT - SLOT CHANGE"
         const val SIM_CHANGE = "SIM CHANGE"
-        const val SIM_ABSENT = "SIM ABSENT"
+        const val BOTH_SLOT_EMPTY = "Both Slot Empty"
     }
 }

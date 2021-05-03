@@ -24,6 +24,16 @@ class SharedPreferencesForData(context: Context) {
         return sharedPref.getString(KEY_NAME, null)
     }
 
+    fun saveInt(KEY_NAME: String, value: Int) {
+        val editor: SharedPreferences.Editor = sharedPref.edit()
+        editor.putInt(KEY_NAME, value)
+        editor!!.commit()
+    }
+
+    fun getValueInt(KEY_NAME: String): Int {
+        return sharedPref.getInt(KEY_NAME, 0)
+    }
+
     fun saveHashMap(KEY_SLOT_NO: String, displayName: String, subscriptionId: String, mobileNo: String) {
         val simDataMap = HashMap<String, String>()
         simDataMap[ApplicationConstants.KEY_DISPLAY_NAME] = displayName

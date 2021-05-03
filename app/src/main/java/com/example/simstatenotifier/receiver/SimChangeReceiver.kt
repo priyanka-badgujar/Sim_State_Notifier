@@ -8,16 +8,16 @@ import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
 import com.example.simstatenotifier.helper.SetSimDataHelper
 
-class SimChangeReceiver : BroadcastReceiver() {
-
-    override fun onReceive(context: Context, intent: Intent) {
-        if (ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.READ_PHONE_STATE
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            val simDataHelper = SetSimDataHelper(context)
-            simDataHelper.setNewSimData()
-        }
-    }
-}
+//class SimChangeReceiver : BroadcastReceiver() {
+//
+//    override fun onReceive(context: Context, intent: Intent) {
+//        if (ContextCompat.checkSelfPermission(
+//                context,
+//                Manifest.permission.READ_PHONE_STATE
+//            ) == PackageManager.PERMISSION_GRANTED
+//        ) {
+//            val simDataHelper = SetSimDataHelper(context)
+//            simDataHelper.setNewSimData()
+//        }
+//    }
+//}

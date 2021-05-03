@@ -34,18 +34,60 @@ class SimDataHelper(
     }
 
     fun getSelectedSimStatus(subscriptionId: String?): MutableLiveData<String> {
+        var simCount = sharedPreferences.getValueInt(ApplicationConstants.KEY_NEW_SIM_COUNT)
         var selectedSimStatusValue = MutableLiveData<String>()
-
         firstSimNewLiveData.observeForever {
-            selectedSimStatusValue.value = returnSelectedSimStatus(subscriptionId)
+            selectedSimStatusValue.value = returnSelectedSimStatus(subscriptionId, simCount)
         }
         secondSimNewLiveData.observeForever {
-            selectedSimStatusValue.value = returnSelectedSimStatus(subscriptionId)
+            selectedSimStatusValue.value = returnSelectedSimStatus(subscriptionId, simCount)
         }
         return selectedSimStatusValue
     }
 
-    private fun returnSelectedSimStatus(subscriptionId: String?) = when {
+    private fun returnSelectedSimStatus(subscriptionId: String?, simCount: Int): String? =
+        when (simCount) {
+            0 -> ApplicationConstants.BOTH_SLOT_EMPTY
+            1 -> returnSelectedSimStatusForSingleSim(
+                subscriptionId,
+                sharedPreferences.getValueInt(ApplicationConstants.KEY_NEW_SIM_SLOT_INDEX)
+            )
+            2 -> returnSelectedSimStatusForDualSim(subscriptionId)
+            else -> ""
+        }
+
+    private fun returnSelectedSimStatusForSingleSim(
+        subscriptionId: String?,
+        simSlotIndex: Int?
+    ): String? = if (simSlotIndex == 0) {
+        when {
+            (firstSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID] == subscriptionId &&
+                    firstSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID] == firstSimOld[ApplicationConstants.KEY_SUBSCRIPTION_ID]) ->
+                ApplicationConstants.SIM_PRESENT_NO_CHANGE
+            (firstSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID] == subscriptionId &&
+                    firstSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID] == secondSimOld[ApplicationConstants.KEY_SUBSCRIPTION_ID]) ->
+                ApplicationConstants.SIM_PRESENT_SLOT_CHANGE
+            (firstSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID] != subscriptionId) ->
+                ApplicationConstants.SIM_CHANGE
+            else -> ""
+        }
+    } else if (simSlotIndex == 1) {
+        when {
+            (secondSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID] == subscriptionId &&
+                    secondSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID] == secondSimOld[ApplicationConstants.KEY_SUBSCRIPTION_ID]) ->
+                ApplicationConstants.SIM_PRESENT_NO_CHANGE
+            (secondSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID] == subscriptionId &&
+                    secondSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID] == firstSimOld[ApplicationConstants.KEY_SUBSCRIPTION_ID]) ->
+                ApplicationConstants.SIM_PRESENT_SLOT_CHANGE
+            (secondSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID] != subscriptionId) ->
+                ApplicationConstants.SIM_CHANGE
+            else -> ""
+        }
+    } else {
+        ""
+    }
+
+    private fun returnSelectedSimStatusForDualSim(subscriptionId: String?) = when {
         ((firstSimOld[ApplicationConstants.KEY_SUBSCRIPTION_ID] == subscriptionId &&
                 firstSimOld[ApplicationConstants.KEY_SUBSCRIPTION_ID] == firstSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID]) ||
                 secondSimOld[ApplicationConstants.KEY_SUBSCRIPTION_ID] == subscriptionId &&
@@ -58,13 +100,11 @@ class SimDataHelper(
                 secondSimOld[ApplicationConstants.KEY_SUBSCRIPTION_ID] == firstSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID]) -> {
             ApplicationConstants.SIM_PRESENT_SLOT_CHANGE
         }
-        ((firstSimOld[ApplicationConstants.KEY_SUBSCRIPTION_ID] == subscriptionId &&
-                firstSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID] == ApplicationConstants.NOT_SET) &&
-                secondSimOld[ApplicationConstants.KEY_SUBSCRIPTION_ID] == subscriptionId &&
-                secondSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID] == ApplicationConstants.NOT_SET) -> {
-            ApplicationConstants.SIM_ABSENT
+        (firstSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID] != subscriptionId &&
+                secondSimNew[ApplicationConstants.KEY_SUBSCRIPTION_ID] != subscriptionId) -> {
+            ApplicationConstants.SIM_CHANGE
         }
-        else -> ApplicationConstants.SIM_CHANGE
+        else -> ""
     }
 
     fun setSimData() {
@@ -91,6 +131,11 @@ class SimDataHelper(
         secondSimNew = sharedPreferences.getHashMapData(ApplicationConstants.KEY_SLOT_SECOND)
         firstSimNewLiveData.value = firstSimNew
         secondSimNewLiveData.value = secondSimNew
+    }
+
+    fun setNewSimDataToSharedPreferences() {
+        if (checkPermission())
+            setSimDataHelper.setNewSimData()
     }
 
     fun setOldSimDataToNew() {

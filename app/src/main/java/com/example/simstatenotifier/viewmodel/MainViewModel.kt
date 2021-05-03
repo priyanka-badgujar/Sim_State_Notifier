@@ -53,6 +53,10 @@ class MainViewModel(
         setAndFetchSimData()
     }
 
+    fun setNewSimDataToSharedPref() {
+        simDataHelper.setNewSimDataToSharedPreferences()
+    }
+
     fun setOldSimDataTONew() {
         simDataHelper.setOldSimDataToNew()
         setAndFetchSimData()

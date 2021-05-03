@@ -7,6 +7,8 @@ import android.telephony.SubscriptionManager
 import androidx.annotation.RequiresPermission
 import com.example.simstatenotifier.constants.ApplicationConstants
 import com.example.simstatenotifier.sharedpreferences.SharedPreferencesForData
+import kotlin.math.sign
+
 
 class SetSimDataHelper(context: Context) {
 
@@ -68,6 +70,15 @@ class SetSimDataHelper(context: Context) {
 
     @RequiresPermission(android.Manifest.permission.READ_PHONE_STATE)
     fun setNewSimData() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            sharedPreference.saveInt(ApplicationConstants.KEY_NEW_SIM_COUNT, sManager.activeSubscriptionInfoCount)
+        }
+
+        if (sManager.activeSubscriptionInfoCount == 1) {
+            sharedPreference.saveInt(ApplicationConstants.KEY_NEW_SIM_SLOT_INDEX, sManager.activeSubscriptionInfoList[0].simSlotIndex)
+        }
+
         val infoSim1: SubscriptionInfo? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             sManager.getActiveSubscriptionInfoForSimSlotIndex(0)
         } else {

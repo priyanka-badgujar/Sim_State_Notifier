@@ -135,6 +135,11 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        mainViewModel.setNewSimDataToSharedPref()
+    }
+
     override fun onStop() {
         super.onStop()
         val pref =
